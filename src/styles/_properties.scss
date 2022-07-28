@@ -1,0 +1,9 @@
+:root {
+  --color-scheme: light;
+
+  // Colors
+  --color-primary: red;
+
+  color-scheme: var(--color-scheme);
+  accent-color: var(--color-primary);
+}

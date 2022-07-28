@@ -1,0 +1,7 @@
+@import "normalize";
+@import "properties";
+@import "utils";
+
+html {
+  font-size: var(--base-font-size);
+}
