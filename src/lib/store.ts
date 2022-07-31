@@ -1,7 +1,27 @@
 import type { ParseResult } from "src/routes/api/parse-url/_metadataScraper/types";
 import { derived, writable } from "svelte/store";
+import { browser } from "$app/env";
 
-const rawData = writable<ParseResult | undefined>(undefined);
+let localStorageResult: ParseResult | undefined;
+if (browser) {
+  const storedResult = localStorage.getItem("parseResult");
+
+  if (storedResult) {
+    localStorageResult = JSON.parse(storedResult);
+  }
+}
+
+const rawData = writable<ParseResult | undefined>(localStorageResult);
+
+rawData.subscribe((data) => {
+  if (!browser) return;
+  if (!data) {
+    localStorage.removeItem("parseResult");
+    return;
+  }
+
+  localStorage.setItem("parseResult", JSON.stringify(data));
+});
 
 export const googleSnippetData = derived(rawData, (data) => {
   if (!data) return undefined;
