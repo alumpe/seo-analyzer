@@ -1,8 +1,8 @@
 import { getMetadataFromDomain } from "./_metadataScraper";
-import type { MetadataObject } from "./_metadataScraper/types";
+import type { ParseResult } from "./_metadataScraper/types";
 import type { RequestHandler } from "./__types/index";
 
-export const GET: RequestHandler<MetadataObject> = async ({ url }) => {
+export const GET: RequestHandler<ParseResult> = async ({ url }) => {
   const passedUrl = url.searchParams.get("url");
 
   if (!passedUrl) {

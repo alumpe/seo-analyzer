@@ -1,4 +1,4 @@
-export const primaryFields = ["image", "description"] as const;
+export const primaryFields = ["title", "image", "description"] as const;
 export type DefaultProperty = typeof primaryFields[number];
 
 export const ogFields = ["og:title", "og:type", "og:image", "og:description"] as const;
@@ -15,3 +15,9 @@ export type TwitterProperty = typeof twitterFields[number];
 export type MetadataObject = Partial<{
   [key in "title" | DefaultProperty | OpenGraphProperty | TwitterProperty]: string;
 }>;
+
+export type ParseResult = {
+  parsedUrl: string;
+  siteTitle?: string;
+  metaTags: MetadataObject;
+};

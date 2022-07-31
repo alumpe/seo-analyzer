@@ -3,12 +3,12 @@ import { facebookData as facebook } from "$lib/store";
 </script>
 
 <div class="card-container">
-  <div class="img" style="background-image: url({$facebook.imgUrl})" />
+  <div class="img" style="background-image: url({$facebook?.imgUrl})" />
 
   <div class="text-container">
-    <span class="domain">{$facebook.domain}</span>
-    <span class="title">{$facebook.title}</span>
-    <span class="description">{$facebook.description}</span>
+    <span class="domain">{$facebook?.domain}</span>
+    <span class="title">{$facebook?.title}</span>
+    <span class="description">{$facebook?.description}</span>
   </div>
 </div>
 

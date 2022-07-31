@@ -3,9 +3,9 @@ import { googleSnippetData as google } from "$lib/store";
 </script>
 
 <div class="snippet-container">
-  <span class="title">{$google.title}</span>
-  <span class="url">{$google.imgUrl}</span>
-  <span class="description">{$google.description}</span>
+  <span class="title">{$google?.title}</span>
+  <span class="url">{$google?.url}</span>
+  <span class="description">{$google?.description}</span>
 </div>
 
 <style lang="scss">
