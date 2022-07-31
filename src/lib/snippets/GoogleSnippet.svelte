@@ -1,5 +1,5 @@
 <script lang="ts">
-import { googleSnippetData as google } from "$lib/store";
+import { googleSnippetData as google } from "$lib/stores/parsedResult";
 </script>
 
 <div class="snippet-container">

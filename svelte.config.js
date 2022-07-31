@@ -14,8 +14,9 @@ const config = {
 
   kit: {
     adapter: adapter(),
-    files: {
-      lib: "src/lib",
+    alias: {
+      $lib: "src/lib",
+      $routes: "src/routes",
     },
   },
 };

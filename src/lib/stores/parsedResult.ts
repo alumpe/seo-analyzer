@@ -1,4 +1,4 @@
-import type { ParseResult } from "src/routes/api/parse-url/_metadataScraper/types";
+import type { ParseResult } from "$routes/api/parse-url/_metadataScraper/types";
 import { derived, writable } from "svelte/store";
 import { browser } from "$app/env";
 

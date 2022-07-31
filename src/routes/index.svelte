@@ -1,7 +1,7 @@
 <script lang="ts">
 import FacebookCard from "$lib/snippets/FacebookCard.svelte";
 import GoogleSnippet from "$lib/snippets/GoogleSnippet.svelte";
-import { fetchMetaData } from "$lib/store";
+import { fetchMetaData } from "$lib/stores/parsedResult";
 
 let inputValue: string = "https://nodejs.org";
 </script>

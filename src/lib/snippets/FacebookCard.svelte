@@ -1,5 +1,5 @@
 <script lang="ts">
-import { facebookData as facebook } from "$lib/store";
+import { facebookData as facebook } from "$lib/stores/parsedResult";
 </script>
 
 <div class="card-container">
