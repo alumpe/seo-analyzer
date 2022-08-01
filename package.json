@@ -31,6 +31,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@tanstack/svelte-table": "^8.5.2",
     "cheerio": "^1.0.0-rc.12",
     "sass": "^1.54.0"
   }

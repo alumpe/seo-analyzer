@@ -1,6 +1,7 @@
+import { browser } from "$app/env";
 import type { ParseResult } from "$routes/api/parse-url/_metadataScraper/types";
 import { derived, writable } from "svelte/store";
-import { browser } from "$app/env";
+import { addPageEntry } from "./sitemap";
 
 let localStorageResult: ParseResult | undefined;
 if (browser) {
@@ -58,4 +59,5 @@ export const fetchMetaData = async (siteUrl: string) => {
   const response = await fetch(`/api/parse-url?url=${encodeURIComponent(siteUrl)}`);
   const data = await (response.json() as Promise<ParseResult>);
   rawData.set(data);
+  addPageEntry(data);
 };

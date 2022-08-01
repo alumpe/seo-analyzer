@@ -19,5 +19,6 @@ export type MetadataObject = Partial<{
 export type ParseResult = {
   parsedUrl: string;
   siteTitle?: string;
+  internalLinks: string[];
   metaTags: MetadataObject;
 };

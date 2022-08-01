@@ -1,4 +1,5 @@
 <script lang="ts">
+import PageTable from "$lib/PageTable.svelte";
 import FacebookCard from "$lib/snippets/FacebookCard.svelte";
 import GoogleSnippet from "$lib/snippets/GoogleSnippet.svelte";
 import { fetchMetaData } from "$lib/stores/parsedResult";
@@ -6,23 +7,42 @@ import { fetchMetaData } from "$lib/stores/parsedResult";
 let inputValue: string = "https://nodejs.org";
 </script>
 
-<div class="container">
-  <input type="text" bind:value={inputValue} />
-  <button on:click={() => fetchMetaData(inputValue)}>Fetch website</button>
+<div class="layout">
+  <div class="table-container">
+    <div class="search-bar">
+      <input type="text" bind:value={inputValue} />
+      <button on:click={() => fetchMetaData(inputValue)}>Fetch website</button>
+    </div>
 
-  <GoogleSnippet />
-  <FacebookCard />
+    <PageTable />
+  </div>
+
+  <div class="snippet-container">
+    <GoogleSnippet />
+    <FacebookCard />
+  </div>
 </div>
 
 <style lang="scss">
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
 }
 
-input {
-  width: 40rem;
-  padding: 0.5rem;
+.table-container {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.search-bar {
+  display: flex;
+
+  input {
+    padding: 0.5rem;
+    flex-grow: 1;
+  }
 }
 </style>

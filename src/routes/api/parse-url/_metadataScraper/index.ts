@@ -1,8 +1,9 @@
 import { load } from "cheerio";
-import { primaryFields, ogFields, twitterFields, type ParseResult } from "./types";
+import { extractInternalLinks } from "./extractInternalLinks";
+import { ogFields, primaryFields, twitterFields, type ParseResult } from "./types";
 
 const extractMetaTags = (url: string, html: string) => {
-  const parseResult: ParseResult = { parsedUrl: url, metaTags: {} };
+  const parseResult: ParseResult = { parsedUrl: url, internalLinks: [], metaTags: {} };
   const $ = load(html);
 
   const t = $("title").first().text();
@@ -21,6 +22,8 @@ const extractMetaTags = (url: string, html: string) => {
       }
     });
   });
+
+  parseResult.internalLinks = extractInternalLinks($);
 
   return parseResult;
 };
