@@ -51,7 +51,7 @@ const tableOptions = writable<Omit<TableOptions<PageEntry>, "data">>({
 
 const combinedOptions = derived([tableData, tableOptions], ([tableData, tableOptions]) => ({
   ...tableOptions,
-  data: Array.from(tableData.values()),
+  data: Array.from(tableData.values()).sort(PageEntry.comparePageEntries),
 }));
 
 export const table = createSvelteTable(combinedOptions);
