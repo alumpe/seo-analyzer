@@ -1,3 +1,5 @@
+import type { ParseResult } from "$routes/api/parse-url/_metadataScraper/types";
+
 export class PageEntry extends URL {
   constructor(url: string) {
     super(url);
@@ -15,5 +17,23 @@ export class PageEntry extends URL {
   get uniqueKey() {
     // trim slashes from the beginning and end of the path
     return this.hostname + this.pathname;
+  }
+}
+
+export class ParsedPageEntry extends PageEntry {
+  internalLinks;
+  metaTags;
+  siteTitle;
+
+  constructor(
+    url: string,
+    internalLinks: ParseResult["internalLinks"],
+    metaTags: ParseResult["metaTags"],
+    siteTitle: ParseResult["siteTitle"]
+  ) {
+    super(url);
+    this.internalLinks = internalLinks.map((link) => new URL(link));
+    this.metaTags = metaTags;
+    this.siteTitle = siteTitle;
   }
 }

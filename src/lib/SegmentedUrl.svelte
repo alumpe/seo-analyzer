@@ -1,7 +1,6 @@
 <script lang="ts">
 import { fetchMetaData } from "./stores/parsedResult";
 
-// export let hostname: string;
 export let pathAsArray: string[];
 export let url: string;
 </script>

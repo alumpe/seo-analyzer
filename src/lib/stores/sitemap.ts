@@ -8,13 +8,13 @@ import {
   type TableOptions,
 } from "@tanstack/svelte-table";
 import { derived, writable } from "svelte/store";
-import { PageEntry } from "./PageEntry";
+import { PageEntry, ParsedPageEntry } from "./PageEntry";
 
 export const addPageEntry = (result: ParseResult) => {
-  const { parsedUrl, internalLinks } = result;
+  const { parsedUrl, internalLinks, metaTags, siteTitle } = result;
 
   tableData.update((data) => {
-    const parsedUrlEntry = new PageEntry(parsedUrl);
+    const parsedUrlEntry = new ParsedPageEntry(parsedUrl, internalLinks, metaTags, siteTitle);
     data.set(parsedUrlEntry.uniqueKey, parsedUrlEntry);
 
     internalLinks.forEach((link) => {
@@ -26,12 +26,12 @@ export const addPageEntry = (result: ParseResult) => {
   });
 };
 
-const columnHelper = createColumnHelper<PageEntry>();
+type TableEntry = ParsedPageEntry | PageEntry;
+const columnHelper = createColumnHelper<TableEntry>();
 
 const defaultColumns = [
   columnHelper.accessor(
     (entry) => ({
-      hostname: entry.hostname,
       pathAsArray: entry.pathAsArray,
       url: entry.toString(),
     }),
@@ -42,9 +42,9 @@ const defaultColumns = [
   ),
 ];
 
-const tableData = writable(new Map<PageEntry["uniqueKey"], PageEntry>());
+const tableData = writable(new Map<TableEntry["uniqueKey"], TableEntry>());
 
-const tableOptions = writable<Omit<TableOptions<PageEntry>, "data">>({
+const tableOptions = writable<Omit<TableOptions<TableEntry>, "data">>({
   columns: defaultColumns,
   getCoreRowModel: getCoreRowModel(),
 });
