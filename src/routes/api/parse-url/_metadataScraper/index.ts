@@ -30,7 +30,13 @@ const extractMetaTags = (url: URL, html: string) => {
 
 export const getMetadataFromUrl = async (url: URL) =>
   fetch(url)
-    .then(async (response) => extractMetaTags(new URL(response.url), await response.text()))
+    .then(async (response) => {
+      if (response.headers.get("content-type")?.includes("text/html")) {
+        return extractMetaTags(new URL(response.url), await response.text());
+      }
+
+      throw new Error("Not a HTML page");
+    })
     .catch((error) => {
       if (error instanceof Error) throw error;
       throw new Error(error);
