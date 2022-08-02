@@ -19,21 +19,20 @@ export const addPageEntry = (result: ParseResult) => {
 
     internalLinks.forEach((link) => {
       const pe = new PageEntry(link);
-      data.set(pe.uniqueKey, pe);
+      if (!data.has(pe.uniqueKey)) data.set(pe.uniqueKey, pe);
     });
 
     return data;
   });
 };
 
-type TableEntry = ParsedPageEntry | PageEntry;
+export type TableEntry = ParsedPageEntry | PageEntry;
 const columnHelper = createColumnHelper<TableEntry>();
 
 const defaultColumns = [
   columnHelper.accessor(
     (entry) => ({
-      pathAsArray: entry.pathAsArray,
-      url: entry.toString(),
+      entry,
     }),
     {
       cell: (info) => renderComponent(SegmentedUrl, { ...info.getValue() }),
@@ -42,7 +41,16 @@ const defaultColumns = [
   ),
 ];
 
+export const hoveredRowKey = writable<TableEntry["uniqueKey"] | undefined>();
+
 const tableData = writable(new Map<TableEntry["uniqueKey"], TableEntry>());
+
+export const highlightedRows = derived([hoveredRowKey, tableData], ([key, tableData]) => {
+  if (!key) return [];
+  const hoveredRowEntry = tableData.get(key);
+  if (!(hoveredRowEntry instanceof ParsedPageEntry)) return [];
+  return hoveredRowEntry.internalLinks.map((link) => link.uniqueKey);
+});
 
 const tableOptions = writable<Omit<TableOptions<TableEntry>, "data">>({
   columns: defaultColumns,

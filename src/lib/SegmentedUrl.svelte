@@ -1,17 +1,31 @@
 <script lang="ts">
+import { highlightedRows, type TableEntry } from "$lib/stores/sitemap";
+import { onDestroy } from "svelte";
+import { ParsedPageEntry } from "./stores/PageEntry";
 import { fetchMetaData } from "./stores/parsedResult";
 
-export let pathAsArray: string[];
-export let url: string;
+export let entry: TableEntry;
+
+let isHighlighted: boolean = false;
+$: isParsedEntry = entry instanceof ParsedPageEntry;
+const unsubsribe = highlightedRows.subscribe((rows) => {
+  isHighlighted = rows.includes(entry.uniqueKey);
+});
+
+onDestroy(unsubsribe);
 </script>
 
-<div class="container">
-  <a href={url} target="_blank" class="external-link">🌍</a>
-  <button class="path" on:click={() => fetchMetaData(url)}>
-    {#if pathAsArray.length === 0}
+<div class="container" class:highlighted={isHighlighted}>
+  <a href={entry.href} target="_blank" class="external-link">🌍</a>
+  <button
+    class="path"
+    on:click={() => fetchMetaData(entry.href)}
+    class:deemphasized={!isParsedEntry}
+  >
+    {#if entry.pathAsArray.length === 0}
       <span class="segment">🏠</span>
     {:else}
-      {#each pathAsArray as segment}
+      {#each entry.pathAsArray as segment}
         <span class="slash">/</span><span class="segment">{segment}</span>
       {/each}
     {/if}
@@ -24,12 +38,19 @@ export let url: string;
   flex-direction: row;
   align-items: center;
   padding-block: 0.1rem;
+
+  &.highlighted {
+    background-color: red;
+  }
 }
 
 button.path {
   background: none;
   border: none;
   cursor: pointer;
+  &.deemphasized {
+    opacity: 0.5;
+  }
 }
 
 .external-link {

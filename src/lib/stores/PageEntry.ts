@@ -32,7 +32,9 @@ export class ParsedPageEntry extends PageEntry {
     siteTitle: ParseResult["siteTitle"]
   ) {
     super(url);
-    this.internalLinks = internalLinks.map((link) => new URL(link));
+    this.internalLinks = internalLinks
+      .map((link) => new PageEntry(link))
+      .filter((entry) => this.uniqueKey !== entry.uniqueKey); // filter out self-links
     this.metaTags = metaTags;
     this.siteTitle = siteTitle;
   }

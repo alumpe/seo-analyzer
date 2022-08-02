@@ -1,5 +1,5 @@
 <script lang="ts">
-import { table as sitemap } from "$lib/stores/sitemap";
+import { hoveredRowKey, table as sitemap } from "$lib/stores/sitemap";
 import { flexRender } from "@tanstack/svelte-table";
 </script>
 
@@ -21,7 +21,10 @@ import { flexRender } from "@tanstack/svelte-table";
 
     <tbody>
       {#each $sitemap.getRowModel().rows as row}
-        <tr>
+        <tr
+          on:mouseenter={() => hoveredRowKey.set(row.original.uniqueKey)}
+          on:mouseleave={() => hoveredRowKey.set(undefined)}
+        >
           {#each row.getVisibleCells() as cell}
             <td>
               <svelte:component this={flexRender(cell.column.columnDef.cell, cell.getContext())} />
