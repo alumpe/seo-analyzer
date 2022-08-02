@@ -11,7 +11,7 @@ export const GET: RequestHandler<ParseResult> = async ({ url }) => {
 
   // Add missing protocol to the passed URL
   if (!passedUrl.startsWith("http")) {
-    passedUrl = `https://${passedUrl}`;
+    passedUrl = `http://${passedUrl}`;
   }
 
   let validUrl: URL;
