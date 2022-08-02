@@ -9,9 +9,13 @@ export let url: string;
 <div class="container">
   <a href={url} target="_blank" class="external-link">🌍</a>
   <button class="path" on:click={() => fetchMetaData(url)}>
-    {#each pathAsArray as segment}
-      <span class="slash">/</span><span class="segment">{segment}</span>
-    {/each}
+    {#if pathAsArray.length === 0}
+      <span class="segment">🏠</span>
+    {:else}
+      {#each pathAsArray as segment}
+        <span class="slash">/</span><span class="segment">{segment}</span>
+      {/each}
+    {/if}
   </button>
 </div>
 
