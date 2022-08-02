@@ -1,13 +1,13 @@
 <script lang="ts">
 import { fetchMetaData } from "./stores/parsedResult";
 
-export let hostname: string;
+// export let hostname: string;
 export let pathAsArray: string[];
 export let url: string;
 </script>
 
 <div class="container">
-  <span class="segment">{hostname}</span>
+  <a href={url} target="_blank" class="external-link">🌍</a>
   {#each pathAsArray as segment}
     <span class="slash">/</span><span class="segment">{segment}</span>
   {/each}
@@ -19,6 +19,10 @@ export let url: string;
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.external-link {
+  text-decoration: none;
 }
 .slash {
   margin-inline: 0.2em;
