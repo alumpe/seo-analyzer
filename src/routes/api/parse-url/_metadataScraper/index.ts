@@ -2,8 +2,8 @@ import { load } from "cheerio";
 import { extractInternalLinks } from "./extractInternalLinks";
 import { ogFields, primaryFields, twitterFields, type ParseResult } from "./types";
 
-const extractMetaTags = (url: string, html: string) => {
-  const parseResult: ParseResult = { parsedUrl: url, internalLinks: [], metaTags: {} };
+const extractMetaTags = (url: URL, html: string) => {
+  const parseResult: ParseResult = { parsedUrl: url.href, internalLinks: [], metaTags: {} };
   const $ = load(html);
 
   const t = $("title").first().text();
@@ -23,14 +23,14 @@ const extractMetaTags = (url: string, html: string) => {
     });
   });
 
-  parseResult.internalLinks = extractInternalLinks($);
+  parseResult.internalLinks = extractInternalLinks($, url);
 
   return parseResult;
 };
 
-export const getMetadataFromDomain = async (domain: string) =>
-  fetch(domain)
-    .then(async (response) => extractMetaTags(domain, await response.text()))
+export const getMetadataFromUrl = async (url: URL) =>
+  fetch(url)
+    .then(async (response) => extractMetaTags(new URL(response.url), await response.text()))
     .catch((error) => {
       if (error instanceof Error) throw error;
       throw new Error(error);

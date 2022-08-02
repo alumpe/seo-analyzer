@@ -1,12 +1,17 @@
-import { getMetadataFromDomain } from "./_metadataScraper";
+import { getMetadataFromUrl } from "./_metadataScraper";
 import type { ParseResult } from "./_metadataScraper/types";
 import type { RequestHandler } from "./__types/index";
 
 export const GET: RequestHandler<ParseResult> = async ({ url }) => {
-  const passedUrl = url.searchParams.get("url");
+  let passedUrl = url.searchParams.get("url");
 
   if (!passedUrl) {
     return { status: 400 };
+  }
+
+  // Add missing protocol to the passed URL
+  if (!passedUrl.startsWith("http")) {
+    passedUrl = `https://${passedUrl}`;
   }
 
   let validUrl: URL;
@@ -16,9 +21,7 @@ export const GET: RequestHandler<ParseResult> = async ({ url }) => {
     return { status: 400 };
   }
 
-  const getResponse = await getMetadataFromDomain(validUrl.href);
-
-  console.log(getResponse);
+  const getResponse = await getMetadataFromUrl(validUrl);
 
   return {
     status: 200,

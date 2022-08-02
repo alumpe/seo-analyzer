@@ -14,11 +14,11 @@ export const addPageEntry = (result: ParseResult) => {
   const { parsedUrl, internalLinks } = result;
 
   tableData.update((data) => {
-    const url = new PageEntry(parsedUrl);
-    data.set(url.uniqueKey, url);
+    const parsedUrlEntry = new PageEntry(parsedUrl);
+    data.set(parsedUrlEntry.uniqueKey, parsedUrlEntry);
 
     internalLinks.forEach((link) => {
-      const pe = new PageEntry(`${url.protocol}//${url.hostname}${link}`);
+      const pe = new PageEntry(link);
       data.set(pe.uniqueKey, pe);
     });
 

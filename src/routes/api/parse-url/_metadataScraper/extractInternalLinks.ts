@@ -1,24 +1,16 @@
 import type { CheerioAPI } from "cheerio";
 
-export const extractInternalLinks = ($: CheerioAPI): string[] => {
-  const allInternalLinks: string[] = [];
+export const extractInternalLinks = ($: CheerioAPI, parsedUrl: URL): string[] => {
+  const allInternalLinks: URL[] = [];
 
   $("a[href^='/']").each((index, link) => {
-    if (link.attribs?.href) allInternalLinks.push(link.attribs.href);
+    if (link.attribs?.href) allInternalLinks.push(new URL(link.attribs.href, parsedUrl));
   });
 
-  // Removes anchor tag
-  allInternalLinks.forEach((link, index, array) => {
-    array[index] = link.split("#")[0];
-  });
+  const pageMap = new Map<string, URL>();
+  allInternalLinks.forEach((link) => pageMap.set(link.hostname + link.pathname, link));
 
-  // Removes trailing slash
-  allInternalLinks.forEach((link, index, array) => {
-    if (link !== "/") array[index] = link.replace(/\/+$/, "");
-  });
-
-  // Remove duplicates from the array
-  const uniqueArray = [...new Set(allInternalLinks)];
+  const uniqueArray = Array.from(pageMap.values()).map((url) => url.href);
 
   return uniqueArray;
 };
