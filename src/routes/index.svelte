@@ -6,7 +6,10 @@ import { fetchMetaData } from "$lib/stores/parsedResult";
 
 let inputValue: string = "https://nodejs.org";
 
-const handleFetch = () => fetchMetaData(inputValue);
+const handleFetch = async () => {
+  const urlAfterRedirect = await fetchMetaData(inputValue);
+  inputValue = urlAfterRedirect;
+};
 </script>
 
 <div class="layout">

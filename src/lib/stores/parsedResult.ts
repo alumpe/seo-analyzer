@@ -60,4 +60,6 @@ export const fetchMetaData = async (siteUrl: string) => {
   const data = await (response.json() as Promise<ParseResult>);
   rawData.set(data);
   addPageEntry(data);
+
+  return data.parsedUrl;
 };

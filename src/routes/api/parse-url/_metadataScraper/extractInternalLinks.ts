@@ -7,6 +7,10 @@ export const extractInternalLinks = ($: CheerioAPI, parsedUrl: URL): string[] =>
     if (link.attribs?.href) allInternalLinks.push(new URL(link.attribs.href, parsedUrl));
   });
 
+  $(`a[href^='${parsedUrl.origin}']`).each((index, link) => {
+    if (link.attribs?.href) allInternalLinks.push(new URL(link.attribs.href));
+  });
+
   const pageMap = new Map<string, URL>();
   allInternalLinks.forEach((link) => pageMap.set(link.hostname + link.pathname, link));
 
