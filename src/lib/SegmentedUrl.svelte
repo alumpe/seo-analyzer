@@ -8,10 +8,11 @@ export let url: string;
 
 <div class="container">
   <a href={url} target="_blank" class="external-link">🌍</a>
-  {#each pathAsArray as segment}
-    <span class="slash">/</span><span class="segment">{segment}</span>
-  {/each}
-  <button on:click={() => fetchMetaData(url)}>Fetch</button>
+  <button class="path" on:click={() => fetchMetaData(url)}>
+    {#each pathAsArray as segment}
+      <span class="slash">/</span><span class="segment">{segment}</span>
+    {/each}
+  </button>
 </div>
 
 <style lang="scss">
@@ -19,6 +20,13 @@ export let url: string;
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-block: 0.1rem;
+}
+
+button.path {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .external-link {

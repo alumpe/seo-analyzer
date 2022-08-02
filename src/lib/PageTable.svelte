@@ -37,4 +37,14 @@ import { flexRender } from "@tanstack/svelte-table";
 .table-container {
   overflow-y: auto;
 }
+
+table {
+  width: 100%;
+}
+
+tbody tr {
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
 </style>
