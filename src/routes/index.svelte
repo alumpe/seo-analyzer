@@ -3,12 +3,19 @@ import PageTable from "$lib/PageTable.svelte";
 import FacebookCard from "$lib/snippets/FacebookCard.svelte";
 import GoogleSnippet from "$lib/snippets/GoogleSnippet.svelte";
 import { fetchMetaData } from "$lib/stores/parsedResult";
+import { unparsedPageEntries } from "$lib/stores/sitemap";
 
 let inputValue: string = "https://nodejs.org";
 
-const handleFetch = async () => {
+const handleFetchSingle = async () => {
   const urlAfterRedirect = await fetchMetaData(inputValue);
   inputValue = urlAfterRedirect;
+};
+
+const handleFetchAll = async () => {
+  $unparsedPageEntries.forEach(async (entry) => {
+    await fetchMetaData(entry.href);
+  });
 };
 </script>
 
@@ -18,10 +25,11 @@ const handleFetch = async () => {
       <input
         type="text"
         bind:value={inputValue}
-        on:keydown={(e) => e.key === "Enter" && handleFetch()}
+        on:keydown={(e) => e.key === "Enter" && handleFetchSingle()}
       />
-      <button on:click={handleFetch}>Fetch website</button>
+      <button on:click={handleFetchSingle}>Fetch website</button>
     </div>
+    <button on:click={handleFetchAll}>Fetch all unparsed entries</button>
 
     <PageTable />
   </div>

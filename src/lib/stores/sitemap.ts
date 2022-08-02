@@ -52,6 +52,11 @@ export const highlightedRows = derived([hoveredRowKey, tableData], ([key, tableD
   return hoveredRowEntry.internalLinks.map((link) => link.uniqueKey);
 });
 
+export const unparsedPageEntries = derived(tableData, (tableData) => {
+  const arr = Array.from(tableData.values());
+  return arr.filter((entry) => !(entry instanceof ParsedPageEntry));
+});
+
 const tableOptions = writable<Omit<TableOptions<TableEntry>, "data">>({
   columns: defaultColumns,
   getCoreRowModel: getCoreRowModel(),

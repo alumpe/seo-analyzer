@@ -39,9 +39,9 @@ onDestroy(unsubsribe);
   align-items: center;
   padding-block: 0.1rem;
 
-  &.highlighted {
-    background-color: red;
-  }
+  /* &.highlighted {
+    background-color: rgb(190, 207, 255);
+  } */
 }
 
 button.path {
