@@ -16,7 +16,7 @@ export class PageEntry extends URL {
 
   get uniqueKey() {
     // trim slashes from the beginning and end of the path
-    return this.hostname + this.pathname;
+    return (this.hostname + this.pathname).replace(/\/$/, "");
   }
 }
 
