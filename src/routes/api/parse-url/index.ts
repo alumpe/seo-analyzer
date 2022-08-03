@@ -1,4 +1,4 @@
-import { getMetadataFromUrl } from "./_metadataScraper";
+import { analyzeUrl } from "./_metadataScraper";
 import type { ParseResult } from "./_metadataScraper/types";
 import type { RequestHandler } from "./__types/index";
 
@@ -21,7 +21,7 @@ export const GET: RequestHandler<ParseResult> = async ({ url }) => {
     return { status: 400 };
   }
 
-  const getResponse = await getMetadataFromUrl(validUrl);
+  const getResponse = await analyzeUrl(validUrl);
 
   return {
     status: 200,

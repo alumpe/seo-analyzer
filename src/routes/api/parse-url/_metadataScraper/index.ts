@@ -28,8 +28,13 @@ const extractMetaTags = (url: URL, html: string) => {
   return parseResult;
 };
 
-export const getMetadataFromUrl = async (url: URL) =>
-  fetch(url)
+export const analyzeUrl = async (url: URL) => {
+  const fileRegex = /(?!\.html$)\.\w+$/;
+  if (fileRegex.test(url.pathname)) {
+    throw new Error("Requested page is likely a file");
+  }
+
+  return fetch(url)
     .then(async (response) => {
       if (response.headers.get("content-type")?.includes("text/html")) {
         return extractMetaTags(new URL(response.url), await response.text());
@@ -41,3 +46,4 @@ export const getMetadataFromUrl = async (url: URL) =>
       if (error instanceof Error) throw error;
       throw new Error(error);
     });
+};
