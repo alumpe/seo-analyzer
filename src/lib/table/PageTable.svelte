@@ -9,7 +9,7 @@ import { flexRender } from "@tanstack/svelte-table";
       {#each $sitemap.getHeaderGroups() as headerGroup}
         <tr>
           {#each headerGroup.headers as header}
-            <th>
+            <th style:width={`${header.column.getSize()}px`}>
               <svelte:component
                 this={flexRender(header.column.columnDef.header, header.getContext())}
               />
@@ -43,6 +43,7 @@ import { flexRender } from "@tanstack/svelte-table";
 
 table {
   width: 100%;
+  border-collapse: collapse;
 }
 
 tbody tr {

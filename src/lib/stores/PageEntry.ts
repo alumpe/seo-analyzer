@@ -16,22 +16,25 @@ export class PageEntry extends URL {
 
   get uniqueKey() {
     // trim slashes from the beginning and end of the path
-    return this.hostname + this.pathname;
+    return (this.hostname + this.pathname).replace(/\/$/, "");
   }
 }
 
 export class ParsedPageEntry extends PageEntry {
+  statusCode: number;
   internalLinks;
   metaTags;
   siteTitle;
 
   constructor(
     url: string,
+    statusCode: number,
     internalLinks: ParseResult["internalLinks"],
     metaTags: ParseResult["metaTags"],
     siteTitle: ParseResult["siteTitle"]
   ) {
     super(url);
+    this.statusCode = statusCode;
     this.internalLinks = internalLinks
       .map((link) => new PageEntry(link))
       .filter((entry) => this.uniqueKey !== entry.uniqueKey); // filter out self-links
