@@ -1,7 +1,8 @@
-import { table, tableData, type TableEntry } from "$lib/stores/sitemap";
+import { tableData, type TableEntry } from "$lib/stores/sitemap";
 import { Viewport } from "pixi-viewport";
 import * as PIXI from "pixi.js";
 import { forceLayout } from "./forceLayout";
+import LinkArray from "./LinkArray";
 import NodeArray from "./NodeArray";
 
 const config = {
@@ -19,8 +20,10 @@ export default class Graph {
   width: number;
   height: number;
   nodeLayer: PIXI.Container;
+  linkLayer: PIXI.Container;
 
   nodes: NodeArray = new NodeArray(this);
+  links: LinkArray = new LinkArray(this);
 
   constructor(node: HTMLElement, data: TableEntry[], devicePixelRatio: number) {
     this.node = node;
@@ -66,6 +69,8 @@ export default class Graph {
       event.preventDefault();
     });
 
+    this.linkLayer = new PIXI.Container();
+    this.viewport.addChild(this.linkLayer);
     this.nodeLayer = new PIXI.Container();
     this.viewport.addChild(this.nodeLayer);
 
@@ -80,10 +85,15 @@ export default class Graph {
   updateData(data: TableEntry[]) {
     // 5.
     this.nodes.clearAllNodes();
+    this.links.clearAllLinks();
     this.nodes = new NodeArray(this);
+    this.links = new LinkArray(this);
+
     this.nodes.initNodesFromData(data);
 
     forceLayout(this);
+
+    this.links.redrawAllLinks();
   }
 
   // Updates dimensions of the view

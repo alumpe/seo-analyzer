@@ -22,11 +22,13 @@ export default class NodeArray extends Array<Node> {
 
   // Initializes node array from given node data
   initNodesFromData(data: TableEntry[]) {
-    data.forEach(() => {
-      const nodeObject = new Node(this.graph);
+    data.forEach((entry) => {
+      const nodeObject = new Node(this.graph, entry);
 
       this.graph.nodeLayer.addChild(nodeObject);
       this.push(nodeObject);
     });
+
+    this.graph.links.initLinksFromNodes();
   }
 }

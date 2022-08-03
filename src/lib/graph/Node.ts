@@ -1,14 +1,21 @@
+import { ParsedPageEntry } from "$lib/stores/PageEntry";
+import type { TableEntry } from "$lib/stores/sitemap";
 import * as PIXI from "pixi.js";
 import type Graph from "./Graph";
 
 export default class Node extends PIXI.Graphics {
-  private graph: Graph;
-  private radius: number;
+  graph: Graph;
+  radius: number;
+  entry: TableEntry;
 
-  constructor(graph: Graph) {
+  constructor(graph: Graph, entry: TableEntry) {
     super();
 
     this.graph = graph;
+    this.entry = entry;
+
+    this.x = 0;
+    this.y = 0;
 
     this.interactive = true;
     this.buttonMode = true;
@@ -23,7 +30,8 @@ export default class Node extends PIXI.Graphics {
   redraw() {
     this.clear();
 
-    this.beginFill(0x666666);
+    this.beginFill(this.entry instanceof ParsedPageEntry ? 0x666666 : 0xbbbbbb);
+
     this.drawCircle(0, 0, this.radius);
     this.endFill();
   }

@@ -1,27 +1,21 @@
-import { forceManyBody, forceSimulation, forceX, forceY } from "d3";
+import { forceCenter, forceCollide, forceLink, forceManyBody, forceSimulation } from "d3";
 import type Graph from "./Graph";
+import type Node from "./Node";
 
-const FORCE_LAYOUT_NODE_REPULSION_STRENGTH = -500; // negative value for repulsion
-const FORCE_LAYOUT_ITERATIONS = 100;
+const FORCE_LAYOUT_NODE_REPULSION_STRENGTH = -1; // negative value for repulsion
+const FORCE_LAYOUT_ITERATIONS = 50;
 
 export const forceLayout = (graph: Graph) => {
   forceSimulation(graph.nodes)
     .force("charge", forceManyBody().strength(FORCE_LAYOUT_NODE_REPULSION_STRENGTH))
-    .force(
-      "x",
-
-      forceX()
-        .x(graph.width / 2)
-        .strength(0.2)
-    )
-    .force("y", forceY(graph.height / 2).strength(0.2))
+    .force("center", forceCenter(graph.width / 2, graph.height / 2).strength(0.1))
+    .force("collide", forceCollide((n: Node) => n.radius).strength(0.7))
     // .force(
     //   "link",
-    //   d3
-    //     .forceLink(this.links)
-    //     .id((linkData) => linkData.value)
-    //     .distance(20)
-    //     .strength(0.2)
+    //   forceLink(graph.links)
+    //     .id((node: Node) => node.entry!.uniqueKey)
+    //     .distance(200)
+    //     .strength(2)
     // )
     .stop()
     .tick(FORCE_LAYOUT_ITERATIONS);
