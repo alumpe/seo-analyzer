@@ -11,7 +11,7 @@ const getColor = () => {
   if (statusCode >= 300 && statusCode < 400) {
     return "#c16d005e";
   }
-  if (statusCode >= 400 && statusCode < 500) {
+  if (statusCode >= 400) {
     return "#c100005e";
   }
   return "#bbbbbb";
