@@ -1,4 +1,6 @@
-import SegmentedUrl from "$lib/SegmentedUrl.svelte";
+import ExternalLink from "$lib/table/ExternalLink.svelte";
+import SegmentedUrl from "$lib/table/SegmentedUrl.svelte";
+import Status from "$lib/table/Status.svelte";
 import type { ParseResult } from "$routes/api/parse-url/_metadataScraper/types";
 import {
   createColumnHelper,
@@ -11,10 +13,16 @@ import { derived, writable } from "svelte/store";
 import { PageEntry, ParsedPageEntry } from "./PageEntry";
 
 export const addPageEntry = (result: ParseResult) => {
-  const { parsedUrl, internalLinks, metaTags, siteTitle } = result;
+  const { parsedUrl, statusCode, internalLinks, metaTags, siteTitle } = result;
 
   tableData.update((data) => {
-    const parsedUrlEntry = new ParsedPageEntry(parsedUrl, internalLinks, metaTags, siteTitle);
+    const parsedUrlEntry = new ParsedPageEntry(
+      parsedUrl,
+      statusCode,
+      internalLinks,
+      metaTags,
+      siteTitle
+    );
     data.set(parsedUrlEntry.uniqueKey, parsedUrlEntry);
 
     internalLinks.forEach((link) => {
@@ -32,11 +40,34 @@ const columnHelper = createColumnHelper<TableEntry>();
 const defaultColumns = [
   columnHelper.accessor(
     (entry) => ({
+      url: entry.href,
+    }),
+    {
+      cell: (info) => renderComponent(ExternalLink, { ...info.getValue() }),
+      header: undefined,
+      id: "web",
+      size: 10,
+    }
+  ),
+  columnHelper.accessor(
+    (entry) => ({
+      statusCode: entry instanceof ParsedPageEntry ? entry.statusCode : undefined,
+    }),
+    {
+      cell: (info) => renderComponent(Status, { ...info.getValue() }),
+      header: undefined,
+      id: "status",
+      size: 10,
+    }
+  ),
+  columnHelper.accessor(
+    (entry) => ({
       entry,
     }),
     {
       cell: (info) => renderComponent(SegmentedUrl, { ...info.getValue() }),
       header: "URL",
+      size: 9999,
     }
   ),
 ];

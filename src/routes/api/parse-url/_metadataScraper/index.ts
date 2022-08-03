@@ -2,8 +2,8 @@ import { load } from "cheerio";
 import { extractInternalLinks } from "./extractInternalLinks";
 import { ogFields, primaryFields, twitterFields, type ParseResult } from "./types";
 
-const extractMetaTags = (url: URL, html: string) => {
-  const parseResult: ParseResult = { parsedUrl: url.href, internalLinks: [], metaTags: {} };
+const extractMetaTags = (parseResult: ParseResult, html: string) => {
+  const url = new URL(parseResult.parsedUrl);
   const $ = load(html);
 
   const t = $("title").first().text();
@@ -36,11 +36,18 @@ export const analyzeUrl = async (url: URL) => {
 
   return fetch(url)
     .then(async (response) => {
-      if (response.headers.get("content-type")?.includes("text/html")) {
-        return extractMetaTags(new URL(response.url), await response.text());
+      if (!response.headers.get("content-type")?.includes("text/html")) {
+        throw new Error("Not a HTML page");
       }
 
-      throw new Error("Not a HTML page");
+      const parseResult: ParseResult = {
+        parsedUrl: response.url,
+        statusCode: response.status,
+        internalLinks: [],
+        metaTags: {},
+      };
+
+      return extractMetaTags(parseResult, await response.text());
     })
     .catch((error) => {
       if (error instanceof Error) throw error;

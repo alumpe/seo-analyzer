@@ -1,8 +1,8 @@
 <script lang="ts">
+import { ParsedPageEntry } from "$lib/stores/PageEntry";
+import { fetchMetaData } from "$lib/stores/parsedResult";
 import { highlightedRows, type TableEntry } from "$lib/stores/sitemap";
 import { onDestroy } from "svelte";
-import { ParsedPageEntry } from "./stores/PageEntry";
-import { fetchMetaData } from "./stores/parsedResult";
 
 export let entry: TableEntry;
 
@@ -16,7 +16,6 @@ onDestroy(unsubsribe);
 </script>
 
 <div class="container" class:highlighted={isHighlighted}>
-  <a href={entry.href} target="_blank" class="external-link">🌍</a>
   <button
     class="path"
     on:click={() => fetchMetaData(entry.href)}
@@ -53,9 +52,6 @@ button.path {
   }
 }
 
-.external-link {
-  text-decoration: none;
-}
 .slash {
   margin-inline: 0.2em;
 }

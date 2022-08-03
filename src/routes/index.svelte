@@ -1,9 +1,9 @@
 <script lang="ts">
-import PageTable from "$lib/PageTable.svelte";
 import FacebookCard from "$lib/snippets/FacebookCard.svelte";
 import GoogleSnippet from "$lib/snippets/GoogleSnippet.svelte";
 import { fetchMetaData } from "$lib/stores/parsedResult";
 import { unparsedPageEntries } from "$lib/stores/sitemap";
+import PageTable from "$lib/table/PageTable.svelte";
 
 let inputValue: string = "https://nodejs.org";
 
