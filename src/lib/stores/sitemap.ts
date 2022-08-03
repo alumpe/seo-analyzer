@@ -43,7 +43,7 @@ const defaultColumns = [
 
 export const hoveredRowKey = writable<TableEntry["uniqueKey"] | undefined>();
 
-const tableData = writable(new Map<TableEntry["uniqueKey"], TableEntry>());
+export const tableData = writable(new Map<TableEntry["uniqueKey"], TableEntry>());
 
 export const highlightedRows = derived([hoveredRowKey, tableData], ([key, tableData]) => {
   if (!key) return [];
