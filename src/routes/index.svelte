@@ -5,18 +5,14 @@ import { fetchMetaData } from "$lib/stores/parsedResult";
 import { unparsedPageEntries } from "$lib/stores/sitemap";
 import PageTable from "$lib/table/PageTable.svelte";
 
-let inputValue: string = "https://nodejs.org";
+let inputValue = "4ft.de";
 
 const handleFetchSingle = async () => {
   const urlAfterRedirect = await fetchMetaData(inputValue);
   inputValue = urlAfterRedirect;
 };
 
-const handleFetchAll = async () => {
-  $unparsedPageEntries.forEach(async (entry) => {
-    await fetchMetaData(entry.href);
-  });
-};
+const handleFetchAll = () => $unparsedPageEntries.forEach((entry) => fetchMetaData(entry.href));
 </script>
 
 <div class="layout">

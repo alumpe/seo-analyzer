@@ -6,7 +6,7 @@ import { onDestroy } from "svelte";
 
 export let entry: TableEntry;
 
-let isHighlighted: boolean = false;
+let isHighlighted = false;
 $: isParsedEntry = entry instanceof ParsedPageEntry;
 const unsubsribe = highlightedRows.subscribe((rows) => {
   isHighlighted = rows.includes(entry.uniqueKey);
