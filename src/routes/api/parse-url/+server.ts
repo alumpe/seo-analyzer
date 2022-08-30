@@ -1,12 +1,12 @@
+import { error, json } from "@sveltejs/kit";
+import type { RequestHandler } from "./$types";
 import { analyzeUrl } from "./_metadataScraper";
-import type { ParseResult } from "./_metadataScraper/types";
-import type { RequestHandler } from "./__types/index";
 
-export const GET: RequestHandler<ParseResult> = async ({ url }) => {
+export const GET: RequestHandler = async ({ url }) => {
   let passedUrl = url.searchParams.get("url");
 
   if (!passedUrl) {
-    return { status: 400 };
+    throw error(400);
   }
 
   // Add missing protocol to the passed URL
@@ -18,13 +18,10 @@ export const GET: RequestHandler<ParseResult> = async ({ url }) => {
   try {
     validUrl = new URL(passedUrl);
   } catch {
-    return { status: 400 };
+    throw error(400);
   }
 
   const getResponse = await analyzeUrl(validUrl);
 
-  return {
-    status: 200,
-    body: getResponse,
-  };
+  return json(getResponse);
 };

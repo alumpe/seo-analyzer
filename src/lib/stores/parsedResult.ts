@@ -1,4 +1,4 @@
-import { browser } from "$app/env";
+import { browser } from "$app/environment";
 import type { ParseResult } from "$routes/api/parse-url/_metadataScraper/types";
 import { derived, writable } from "svelte/store";
 import { addPageEntry } from "./sitemap";
