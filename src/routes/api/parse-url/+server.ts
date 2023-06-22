@@ -1,8 +1,7 @@
 import { error, json } from "@sveltejs/kit";
-import type { RequestHandler } from "./$types";
 import { analyzeUrl } from "./_metadataScraper";
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET = async ({ url }) => {
   let passedUrl = url.searchParams.get("url");
 
   if (!passedUrl) {

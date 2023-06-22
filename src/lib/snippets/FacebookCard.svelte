@@ -3,7 +3,10 @@ import { facebookData as facebook } from "$lib/stores/parsedResult";
 </script>
 
 <div class="card-container">
-  <div class="img" style="background-image: url({$facebook?.imgUrl})" />
+  <div
+    class="img"
+    style="background-image: {$facebook?.imgUrl ? `url(${$facebook?.imgUrl})` : 'none'}"
+  />
 
   <div class="text-container">
     <span class="domain">{$facebook?.domain}</span>
